@@ -32,6 +32,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
   && echo 'deb http://apt.llvm.org/unstable/ llvm-toolchain-9 main' >> /etc/apt/sources.list \
   && adduser --disabled-password --gecos '' builder && adduser builder sudo && printf 'builder\tALL=NOPASSWD: ALL\n' >> /etc/sudoers
 
+COPY install_default_compiler.sh /usr/bin
 USER builder
 WORKDIR /home/builder
 
@@ -43,41 +44,21 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     doxygen \
     bumpversion \
     codespell \
+  && sudo rm -rf /var/lib/apt/lists/* \
   && sudo ln -s /usr/lib/llvm-9/bin/clang-format /usr/bin/clang-format
 
 
 FROM base AS gcc-6
-RUN export DEBIAN_FRONTEND=noninteractive \
-  && sudo apt-get -qq update && sudo apt-get install -yq --no-install-recommends \
-    g++-6 \
-  && sudo ln -s /usr/bin/gcc-6 /usr/bin/gcc \
-  && sudo ln -s /usr/bin/g++-6 /usr/bin/g++
+RUN install_default_compiler.sh gcc 6
 
 FROM base AS gcc-8
-RUN export DEBIAN_FRONTEND=noninteractive \
-  && sudo apt-get -qq update && sudo apt-get install -yq --no-install-recommends \
-    g++-8 \
-  && sudo ln -s /usr/bin/gcc-8 /usr/bin/gcc \
-  && sudo ln -s /usr/bin/g++-8 /usr/bin/g++
+RUN install_default_compiler.sh gcc 8
 
 FROM base AS gcc-9
-RUN export DEBIAN_FRONTEND=noninteractive \
-  && sudo apt-get -qq update && sudo apt-get install -yq --no-install-recommends \
-    g++-9 \
-  && sudo ln -s /usr/bin/gcc-9 /usr/bin/gcc \
-  && sudo ln -s /usr/bin/g++-9 /usr/bin/g++
-
+RUN install_default_compiler.sh gcc 9
 
 FROM base AS clang-3.8
-RUN export DEBIAN_FRONTEND=noninteractive \
-  && sudo apt-get -qq update && sudo apt-get install -yq --no-install-recommends \
-    clang-3.8 \
-  && sudo ln -s /usr/lib/llvm-3.8/bin/clang /usr/bin/clang \
-  && sudo ln -s /usr/lib/llvm-3.8/bin/clang /usr/bin/clang++
+RUN install_default_compiler.sh clang 3.8
 
 FROM base AS clang-9
-RUN export DEBIAN_FRONTEND=noninteractive \
-  && sudo apt-get -qq update && sudo apt-get install -yq --no-install-recommends \
-    clang-9 \
-  && sudo ln -s /usr/lib/llvm-9/bin/clang /usr/bin/clang \
-  && sudo ln -s /usr/lib/llvm-9/bin/clang /usr/bin/clang++
+RUN install_default_compiler.sh clang 9

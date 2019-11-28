@@ -28,7 +28,8 @@ RUN export DEBIAN_FRONTEND=noninteractive \
   && apt-key adv --keyserver keyserver.ubuntu.com --no-tty --recv-keys \
     6084F3CF814B57C1CF12EFD515CF4D18AF4F7421 \
     60C317803A41BA51845E371A1E9377A2BA9EF27F \
-  && echo 'deb http://deb.debian.org/debian oldstable main' >> /etc/apt/sources.list \
+  && echo 'deb http://deb.debian.org/debian stretch main' >> /etc/apt/sources.list \
+  && echo 'deb http://apt.llvm.org/unstable/ llvm-toolchain-5.0 main' >> /etc/apt/sources.list \
   && echo 'deb http://apt.llvm.org/unstable/ llvm-toolchain-9 main' >> /etc/apt/sources.list \
   && adduser --disabled-password --gecos '' builder && adduser builder sudo && printf 'builder\tALL=NOPASSWD: ALL\n' >> /etc/sudoers
 
@@ -62,6 +63,9 @@ RUN install_default_compiler.sh gcc 9
 
 FROM base AS clang-3.8
 RUN install_default_compiler.sh clang 3.8
+
+FROM base AS clang-5
+RUN install_default_compiler.sh clang 5.0
 
 FROM base AS clang-9
 RUN install_default_compiler.sh clang 9

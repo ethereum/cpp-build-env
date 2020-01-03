@@ -1,4 +1,4 @@
-VERSION = 12
+VERSION = 13
 
 targets = base lint gcc-6 gcc-7 gcc-8 gcc-9 clang-3.8 clang-5 clang-9
 

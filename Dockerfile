@@ -2,7 +2,7 @@ FROM debian:unstable AS base
 
 LABEL maintainer="C++ Ethereum team"
 LABEL repo="https://github.com/ethereum/cpp-build-env"
-LABEL version="12"
+LABEL version="13"
 LABEL description="Build environment for C++ Ethereum projects"
 
 RUN export DEBIAN_FRONTEND=noninteractive \
@@ -34,7 +34,8 @@ RUN export DEBIAN_FRONTEND=noninteractive \
   && echo 'deb http://deb.debian.org/debian stretch main' >> /etc/apt/sources.list \
   && echo 'deb http://apt.llvm.org/unstable/ llvm-toolchain-5.0 main' >> /etc/apt/sources.list \
   && echo 'deb http://apt.llvm.org/unstable/ llvm-toolchain-9 main' >> /etc/apt/sources.list \
-  && adduser --disabled-password --gecos '' builder && adduser builder sudo && printf 'builder\tALL=NOPASSWD: ALL\n' >> /etc/sudoers
+  && adduser --disabled-password --gecos '' builder && adduser builder sudo && printf 'builder\tALL=NOPASSWD: ALL\n' >> /etc/sudoers \
+  && rm /tmp/* -rf
 
 COPY install_default_compiler.sh /usr/bin
 USER builder

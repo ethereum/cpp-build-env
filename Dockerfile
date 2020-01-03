@@ -25,6 +25,9 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     python3-git \
   && rm -rf /var/lib/apt/lists/* \
   && pip3 install --no-cache-dir codecov \
+  && (cd /tmp \
+      && curl -sL http://downloads.sourceforge.net/ltp/lcov-1.14.tar.gz | tar xz --strip=1 \
+      && make install) \
   && apt-key adv --keyserver keyserver.ubuntu.com --no-tty --recv-keys \
     6084F3CF814B57C1CF12EFD515CF4D18AF4F7421 \
     60C317803A41BA51845E371A1E9377A2BA9EF27F \

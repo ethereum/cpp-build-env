@@ -54,9 +54,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 FROM base AS gcc-6
 RUN install_default_compiler.sh gcc 6
 
-FROM base AS gcc-7
-RUN install_default_compiler.sh gcc 7
-
 FROM base AS gcc-8
 RUN install_default_compiler.sh gcc 8
 
@@ -65,9 +62,6 @@ RUN install_default_compiler.sh gcc 9
 
 FROM base AS clang-3.8
 RUN install_default_compiler.sh clang 3.8
-
-FROM base AS clang-5
-RUN install_default_compiler.sh clang 5.0
 
 FROM base AS clang-9
 RUN install_default_compiler.sh clang 9

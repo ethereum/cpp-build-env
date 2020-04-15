@@ -1,6 +1,6 @@
 VERSION = 13
 
-targets = base lint gcc-6 gcc-8 gcc-9 clang-3.8 clang-9
+targets = base lint gcc-6 gcc-8 gcc-9 clang-3.8 clang-9 clang-10
 
 all: ${targets}
 

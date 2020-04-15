@@ -43,7 +43,7 @@ WORKDIR /home/builder
 FROM base AS lint
 RUN export DEBIAN_FRONTEND=noninteractive \
   && sudo apt-get -qq update && sudo apt-get install -yq --no-install-recommends \
-    clang-format-9 \
+    clang-format-10 \
     doxygen \
     bumpversion \
     codespell \
@@ -65,3 +65,6 @@ RUN install_default_compiler.sh clang 3.8
 
 FROM base AS clang-9
 RUN install_default_compiler.sh clang 9
+
+FROM base AS clang-10
+RUN install_default_compiler.sh clang 10

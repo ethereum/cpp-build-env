@@ -9,7 +9,7 @@ case "$1" in
         cxx=g++
         ;;
     clang)
-        packages="clang-$version llvm-$version"
+        packages="clang-$version clang-tidy-$version llvm-$version"
         cc=clang
         cxx=clang++
         ;;
@@ -36,9 +36,10 @@ case "$1" in
     sudo ln -s gcov-$version gcov
     ;;
   clang)
-    # Expose all LLVM tools without the version suffix.
+    # Expose all clang & LLVM tools without the version suffix.
     sudo ln -s ../lib/llvm-$version/bin/llc .
     sudo ln -s ../lib/llvm-$version/bin/llvm-* .
+    sudo ln -s ../lib/llvm-$version/bin/clang-* .
     ;;
 esac
 

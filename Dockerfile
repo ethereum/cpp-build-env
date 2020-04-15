@@ -2,7 +2,7 @@ FROM debian:unstable AS base
 
 LABEL maintainer="C++ Ethereum team"
 LABEL repo="https://github.com/ethereum/cpp-build-env"
-LABEL version="13"
+LABEL version="14"
 LABEL description="Build environment for C++ Ethereum projects"
 
 RUN export DEBIAN_FRONTEND=noninteractive \

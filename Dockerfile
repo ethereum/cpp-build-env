@@ -32,8 +32,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     6084F3CF814B57C1CF12EFD515CF4D18AF4F7421 \
     60C317803A41BA51845E371A1E9377A2BA9EF27F \
   && echo 'deb http://deb.debian.org/debian stretch main' >> /etc/apt/sources.list \
-  && echo 'deb http://apt.llvm.org/unstable/ llvm-toolchain-5.0 main' >> /etc/apt/sources.list \
-  && echo 'deb http://apt.llvm.org/unstable/ llvm-toolchain-9 main' >> /etc/apt/sources.list \
   && adduser --disabled-password --gecos '' builder && adduser builder sudo && printf 'builder\tALL=NOPASSWD: ALL\n' >> /etc/sudoers \
   && rm /tmp/* -rf
 
@@ -50,7 +48,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     bumpversion \
     codespell \
   && sudo rm -rf /var/lib/apt/lists/* \
-  && sudo ln -s /usr/lib/llvm-9/bin/clang-format /usr/bin/clang-format
+  && sudo ln -s /usr/bin/clang-format-10 /usr/bin/clang-format
 
 
 FROM base AS gcc-6

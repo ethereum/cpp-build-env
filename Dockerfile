@@ -60,6 +60,9 @@ RUN install_default_compiler.sh gcc 8
 FROM base AS gcc-9
 RUN install_default_compiler.sh gcc 9
 
+FROM base AS gcc-10
+RUN install_default_compiler.sh gcc 10
+
 FROM base AS clang-3.8
 RUN install_default_compiler.sh clang 3.8
 

@@ -63,6 +63,9 @@ RUN install_default_compiler.sh gcc 9
 FROM base AS gcc-10
 RUN install_default_compiler.sh gcc 10
 
+FROM gcc-10 AS gcc-10-multilib
+RUN sudo apt-get -qq update && sudo apt-get install -yq g++-10-multilib && sudo rm -rf /var/lib/apt/lists/*
+
 FROM base AS clang-3.8
 RUN install_default_compiler.sh clang 3.8
 

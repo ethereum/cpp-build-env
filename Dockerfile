@@ -71,5 +71,5 @@ RUN install_default_compiler.sh clang 3.8
 FROM base AS clang-9
 RUN install_default_compiler.sh clang 9
 
-FROM base AS clang-10
+FROM lint AS clang-10
 RUN install_default_compiler.sh clang 10

@@ -44,7 +44,6 @@ FROM base AS lint
 RUN export DEBIAN_FRONTEND=noninteractive \
   && sudo apt-get -qq update && sudo apt-get install -yq --no-install-recommends \
     clang-format-10 \
-    doxygen \
     bumpversion \
     codespell \
   && sudo rm -rf /var/lib/apt/lists/* \

@@ -1,6 +1,7 @@
 #!/bin/sh
 
 version=$2
+additional_packages=$3
 
 case "$1" in
     gcc)
@@ -21,7 +22,7 @@ esac
 
 export DEBIAN_FRONTEND=noninteractive
 sudo apt-get -qq update
-sudo apt-get install -yq --no-install-recommends $packages
+sudo apt-get install -yq --no-install-recommends $packages $additional_packages
 sudo rm -rf /var/lib/apt/lists/*
 
 cd /usr/bin

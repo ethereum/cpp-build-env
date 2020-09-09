@@ -69,4 +69,7 @@ FROM base AS clang-9
 RUN install_default_compiler.sh clang 9
 
 FROM lint AS clang-10
-RUN install_default_compiler.sh clang 10
+RUN install_default_compiler.sh clang 10 \
+  && (cd /tmp \
+    && curl -sL http://downloads.sourceforge.net/ltp/lcov-1.14.tar.gz | tar xz --strip=1 \
+    && sudo make install)

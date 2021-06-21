@@ -2,7 +2,7 @@ FROM debian:unstable AS base
 
 LABEL maintainer="C++ Ethereum team"
 LABEL repo="https://github.com/ethereum/cpp-build-env"
-LABEL version="15"
+LABEL version="16"
 LABEL description="Build environment for C++ Ethereum projects"
 
 RUN export DEBIAN_FRONTEND=noninteractive \
@@ -40,11 +40,12 @@ WORKDIR /home/builder
 FROM base AS lint
 RUN export DEBIAN_FRONTEND=noninteractive \
   && sudo apt-get -qq update && sudo apt-get install -yq --no-install-recommends \
-    clang-format-10 \
+    clang-format-11 \
     bumpversion \
     codespell \
+    shellcheck \
   && sudo rm -rf /var/lib/apt/lists/* \
-  && sudo ln -s /usr/bin/clang-format-10 /usr/bin/clang-format
+  && sudo ln -s /usr/bin/clang-format-11 /usr/bin/clang-format
 
 
 FROM base AS gcc-6
@@ -68,8 +69,11 @@ RUN install_default_compiler.sh clang 3.8
 FROM base AS clang-9
 RUN install_default_compiler.sh clang 9
 
-FROM lint AS clang-10
-RUN install_default_compiler.sh clang 10 \
+FROM base AS clang-10
+RUN install_default_compiler.sh clang 10
+
+FROM lint AS clang-11
+RUN install_default_compiler.sh clang 11 'libc++-11-dev libc++abi-11-dev' \
   && (cd /tmp \
     && curl -sL http://downloads.sourceforge.net/ltp/lcov-1.14.tar.gz | tar xz --strip=1 \
     && sudo make install)

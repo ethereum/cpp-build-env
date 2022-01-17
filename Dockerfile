@@ -2,7 +2,7 @@ FROM debian:unstable AS base
 
 LABEL maintainer="C++ Ethereum team"
 LABEL repo="https://github.com/ethereum/cpp-build-env"
-LABEL version="16"
+LABEL version="17"
 LABEL description="Build environment for C++ Ethereum projects"
 
 RUN export DEBIAN_FRONTEND=noninteractive \
@@ -40,12 +40,12 @@ WORKDIR /home/builder
 FROM base AS lint
 RUN export DEBIAN_FRONTEND=noninteractive \
   && sudo apt-get -qq update && sudo apt-get install -yq --no-install-recommends \
-    clang-format-11 \
+    clang-format-13 \
     bumpversion \
     codespell \
     shellcheck \
   && sudo rm -rf /var/lib/apt/lists/* \
-  && sudo ln -s /usr/bin/clang-format-11 /usr/bin/clang-format
+  && sudo ln -s /usr/bin/clang-format-13 /usr/bin/clang-format
 
 
 FROM base AS gcc-6
@@ -58,10 +58,13 @@ FROM base AS gcc-9
 RUN install_default_compiler.sh gcc 9
 
 FROM base AS gcc-10
-RUN install_default_compiler.sh gcc 10 lcov
+RUN install_default_compiler.sh gcc 10
 
-FROM gcc-10 AS gcc-10-multilib
-RUN sudo apt-get -qq update && sudo apt-get install -yq g++-10-multilib && sudo rm -rf /var/lib/apt/lists/*
+FROM base AS gcc-11
+RUN install_default_compiler.sh gcc 11 lcov
+
+FROM gcc-11 AS gcc-11-multilib
+RUN sudo apt-get -qq update && sudo apt-get install -yq g++-11-multilib && sudo rm -rf /var/lib/apt/lists/*
 
 FROM base AS clang-3.8
 RUN install_default_compiler.sh clang 3.8
@@ -72,8 +75,14 @@ RUN install_default_compiler.sh clang 9
 FROM base AS clang-10
 RUN install_default_compiler.sh clang 10
 
-FROM lint AS clang-11
-RUN install_default_compiler.sh clang 11 'libc++-11-dev libc++abi-11-dev' \
+FROM base AS clang-11
+RUN install_default_compiler.sh clang 11
+
+FROM base AS clang-12
+RUN install_default_compiler.sh clang 12
+
+FROM lint AS clang-13
+RUN install_default_compiler.sh clang 13 'libc++-13-dev libc++abi-13-dev' \
   && (cd /tmp \
     && curl -sL http://downloads.sourceforge.net/ltp/lcov-1.14.tar.gz | tar xz --strip=1 \
     && sudo make install)

@@ -2,7 +2,7 @@ FROM debian:unstable AS base
 
 LABEL maintainer="C++ Ethereum team"
 LABEL repo="https://github.com/ethereum/cpp-build-env"
-LABEL version="21"
+LABEL version="22"
 LABEL description="Build environment for C++ Ethereum projects"
 
 RUN export DEBIAN_FRONTEND=noninteractive \
@@ -36,24 +36,27 @@ WORKDIR /home/builder
 FROM base AS lint
 RUN export DEBIAN_FRONTEND=noninteractive \
   && sudo apt-get -qq update && sudo apt-get install -yq --no-install-recommends \
-    clang-format-17 \
+    clang-format-18 \
     bumpversion \
     codespell \
     shellcheck \
   && sudo rm -rf /var/lib/apt/lists/* \
-  && sudo ln -s /usr/bin/clang-format-17 /usr/bin/clang-format
+  && sudo ln -s /usr/bin/clang-format-18 /usr/bin/clang-format
 
 FROM base AS gcc-12
 RUN install_default_compiler.sh gcc 12
 
 FROM base AS gcc-13
-RUN install_default_compiler.sh gcc 13 'valgrind qemu-user-static lcov libcapture-tiny-perl libdatetime-perl libtimedate-perl'
+RUN install_default_compiler.sh gcc 13
 
-FROM gcc-13 AS gcc-13-multilib
-RUN sudo apt-get -qq update && sudo apt-get install -yq g++-13-multilib && sudo rm -rf /var/lib/apt/lists/*
+FROM base AS gcc-14
+RUN install_default_compiler.sh gcc 14 'valgrind qemu-user-static gcovr'
 
-FROM base AS clang-16
-RUN install_default_compiler.sh clang 16 'libclang-rt-16-dev'
+FROM gcc-14 AS gcc-14-multilib
+RUN sudo apt-get -qq update && sudo apt-get install -yq g++-14-multilib && sudo rm -rf /var/lib/apt/lists/*
 
-FROM lint AS clang-17
-RUN install_default_compiler.sh clang 17 'libclang-rt-17-dev libc++-17-dev libc++abi-17-dev lcov libcapture-tiny-perl libdatetime-perl libtimedate-perl'
+FROM base AS clang-17
+RUN install_default_compiler.sh clang 17 'libclang-rt-17-dev'
+
+FROM lint AS clang-18
+RUN install_default_compiler.sh clang 18 'libclang-rt-18-dev libc++-18-dev libc++abi-18-dev gcovr'
